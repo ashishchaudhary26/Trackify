@@ -3,7 +3,8 @@ package com.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.entity.Admin;
+import java.util.List;
 
 public interface AdminRepository extends JpaRepository<Admin, String> {
-         Admin findByPassword(String password);
+         public List<Admin> findByUsernameAndPassword(String username, String password);
 }
