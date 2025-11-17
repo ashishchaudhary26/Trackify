@@ -1,7 +1,5 @@
 package com.entity;
 
-import org.hibernate.annotations.GeneratorType;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,10 +26,5 @@ public class Admin {
    }
    public void setPassword(String password) {
 	this.password = password;
-   }
-   
-   
-	
-	
-	
+   }	
 }

@@ -9,7 +9,6 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "customer")
 public class Customer {
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String username;
@@ -26,7 +25,4 @@ public class Customer {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	
-
 }
