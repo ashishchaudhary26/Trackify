@@ -1,9 +1,11 @@
 package com.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.entity.CourierDetails;
 import com.entity.Customer;
@@ -15,15 +17,13 @@ public class CustomerService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
     @Autowired
     private CourierDetailsRepository courierDetailsRepository;
-    public static class CustomerNotFoundException extends RuntimeException {
-        /**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
 
-		public CustomerNotFoundException(Long id) {
+    public static class CustomerNotFoundException extends RuntimeException {
+        private static final long serialVersionUID = 1L;
+        public CustomerNotFoundException(Long id) {
             super("Customer not found with id: " + id);
         }
     }
@@ -57,8 +57,31 @@ public class CustomerService {
         }
         customerRepository.deleteById(uuid);
     }
+
     public List<CourierDetails> getCustomerShipments(Long customerId) {
         return courierDetailsRepository.findByCustomerUuid(customerId);
+    }
+
+    @Transactional
+    public CourierDetails createCourierForCustomer(Long customerId, CourierDetails courier) {
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new CustomerNotFoundException(customerId));
+
+        courier.setCustomer(customer);
+
+        if (courier.getTrackingNumber() == null || courier.getTrackingNumber().isBlank()) {
+            courier.setTrackingNumber(generateTrackingNumber());
+        }
+
+        if (courier.getStatus() == null || courier.getStatus().isBlank()) {
+            courier.setStatus("CREATED");
+        }
+
+        return courierDetailsRepository.save(courier);
+    }
+
+    private String generateTrackingNumber() {
+        return "TRK-" + UUID.randomUUID().toString().replace("-", "").substring(0, 8).toUpperCase();
     }
 
 }

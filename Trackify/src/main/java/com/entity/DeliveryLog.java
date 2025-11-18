@@ -1,6 +1,7 @@
 package com.entity;
 
 import jakarta.persistence.*;
+import java.time.Instant;
 
 @Entity
 @Table(name = "deliverylog")
@@ -14,6 +15,11 @@ public class DeliveryLog {
     private String toName;
     private String destinationAddress;
     private String destinationCity;
+
+    
+    private String eventType;     
+    private Instant eventTime;
+    private String performedBy;   
 
     @ManyToOne
     private CourierDetails courierDetails;
@@ -36,8 +42,17 @@ public class DeliveryLog {
     public CourierDetails getCourierDetails() { return courierDetails; }
     public void setCourierDetails(CourierDetails courierDetails) { this.courierDetails = courierDetails; }
 
+    public String getEventType() { return eventType; }
+    public void setEventType(String eventType) { this.eventType = eventType; }
+
+    public Instant getEventTime() { return eventTime; }
+    public void setEventTime(Instant eventTime) { this.eventTime = eventTime; }
+
+    public String getPerformedBy() { return performedBy; }
+    public void setPerformedBy(String performedBy) { this.performedBy = performedBy; }
+
     @Override
     public String toString() {
-        return "DeliveryLog [id=" + id + ", trackingId=" + trackingId + "]";
+        return "DeliveryLog [id=" + id + ", trackingId=" + trackingId + ", eventType=" + eventType + ", eventTime=" + eventTime + "]";
     }
 }

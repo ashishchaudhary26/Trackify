@@ -14,16 +14,6 @@ public class DeliveryLogService {
     @Autowired
     private DeliveryLogRepository deliveryLogRepository;
 
-    public static class DeliveryLogNotFoundException extends RuntimeException {
-        /**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
-		public DeliveryLogNotFoundException(Long id) {
-            super("DeliveryLog not found with id: " + id);
-        }
-    }
     public DeliveryLog saveDeliveryLog(DeliveryLog deliveryLog) {
         return deliveryLogRepository.save(deliveryLog);
     }
@@ -34,25 +24,18 @@ public class DeliveryLogService {
 
     public DeliveryLog getDeliveryLogById(Long id) {
         return deliveryLogRepository.findById(id)
-                .orElseThrow(() -> new DeliveryLogNotFoundException(id));
+                .orElseThrow(() -> new RuntimeException("DeliveryLog not found with id: " + id));
     }
 
-    public DeliveryLog updateDeliveryLog(Long id, DeliveryLog updatedLog) {
-        DeliveryLog existing = deliveryLogRepository.findById(id)
-                .orElseThrow(() -> new DeliveryLogNotFoundException(id));
-
-        existing.setTrackingId(updatedLog.getTrackingId());
-        existing.setToName(updatedLog.getToName());
-        existing.setDestinationAddress(updatedLog.getDestinationAddress());
-        existing.setDestinationCity(updatedLog.getDestinationCity());
-
-        return deliveryLogRepository.save(existing);
+    public List<DeliveryLog> getLogsByCourierId(Long courierId) {
+        return deliveryLogRepository.findByCourierDetailsId(courierId);
     }
+
+    public List<DeliveryLog> getLogsByTrackingId(String trackingId) {
+        return deliveryLogRepository.findByTrackingId(trackingId);
+    }
+
     public void deleteDeliveryLog(Long id) {
-        if (!deliveryLogRepository.existsById(id)) {
-            throw new DeliveryLogNotFoundException(id);
-        }
         deliveryLogRepository.deleteById(id);
     }
-    
 }
