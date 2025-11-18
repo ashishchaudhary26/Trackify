@@ -31,7 +31,6 @@ public class CourierDetailsService {
     @Autowired
     private DeliveryLogRepository logRepo;
 
-    // ----------------------------- CRUD -----------------------------
 
     public CourierDetails createCourier(CourierDetails courier) {
         return courierRepo.save(courier);
@@ -58,7 +57,6 @@ public class CourierDetailsService {
         courierRepo.deleteById(id);
     }
 
- // ----------------------------- FIND BY TRACKING -----------------------------
     public CourierDetails getByTrackingNumber(String trackingNumber) {
         return courierRepo.findByTrackingNumber(trackingNumber)
                 .orElseThrow(() -> new EntityNotFoundException(
@@ -66,7 +64,6 @@ public class CourierDetailsService {
     }
 
 
-    // ----------------------------- ASSIGN STAFF -----------------------------
 
     public CourierDetails assignStaff(Long courierId, Long staffId) {
         CourierDetails courier = getCourierById(courierId);
@@ -77,7 +74,6 @@ public class CourierDetailsService {
         return courierRepo.save(courier);
     }
 
-    // ----------------------------- ASSIGN CUSTOMER -----------------------------
 
     public CourierDetails assignCustomer(Long courierId, Long customerId) {
         CourierDetails courier = getCourierById(courierId);
@@ -88,7 +84,6 @@ public class CourierDetailsService {
         return courierRepo.save(courier);
     }
 
-    // ----------------------------- ADD DELIVERY LOG -----------------------------
 
     public DeliveryLog addDeliveryLog(Long courierId, DeliveryLog log) {
         CourierDetails courier = getCourierById(courierId);
@@ -102,7 +97,6 @@ public class CourierDetailsService {
         return savedLog;
     }
 
-    // ----------------------------- GET ALL LOGS -----------------------------
 
     public List<DeliveryLog> getCourierLogs(Long courierId) {
         CourierDetails courier = getCourierById(courierId);
